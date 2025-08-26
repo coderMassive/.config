@@ -27,7 +27,6 @@ require("lazy").setup({
         })
     end
 },
-{ "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
 { "smoka7/hop.nvim", version = "*", opts = {},},
 {
   'Exafunction/codeium.vim',
@@ -63,10 +62,12 @@ require("lazy").setup({
       background = "Normal",
     },
   }
-}}
+}},
+{ "catppuccin/nvim", name = "catppuccin", priority = 1000 }
 })
-require("gruvbox").setup({
-    transparent_mode = true,
+require("catppuccin").setup({
+    flavour = "mocha",
+    transparent_background = true
 })
 local hop = require('hop')
 local directions = require('hop.hint').HintDirection
@@ -77,10 +78,13 @@ vim.keymap.set('n', 'F', function()
   hop.hint_words({ direction = directions.BEFORE_CURSOR, current_line_only = false })
 end, {remap=true})
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<Space>', builtin.find_files, {})
+vim.keymap.set('n', '<Space>f', builtin.find_files, {})
+vim.keymap.set('n', '<Space>g', builtin.live_grep, {})
+vim.keymap.set('n', '<Space>b', builtin.buffers, {})
+vim.keymap.set('n', '<Space>h', builtin.help_tags, {})
 vim.keymap.set('t', '<Escape>', "<C-\\><C-n><C-w>h",{silent = true})
 local hop = require('hop')
-vim.cmd.colorscheme "gruvbox"
+vim.cmd.colorscheme "catppuccin"
 vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
 vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
