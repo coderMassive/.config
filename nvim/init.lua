@@ -63,7 +63,10 @@ require("lazy").setup({
     },
   }
 }},
-{ "catppuccin/nvim", name = "catppuccin", priority = 1000 }
+{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+{ "karb94/neoscroll.nvim", opts = {} },
+{ 'mhinz/vim-startify' },
+{ 'tpope/vim-commentary' },
 })
 require("catppuccin").setup({
     flavour = "mocha",
