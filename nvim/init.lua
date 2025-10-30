@@ -29,7 +29,7 @@ require("lazy").setup({
 },
 { "smoka7/hop.nvim", version = "*", opts = {},},
 {
-  'Exafunction/codeium.vim',
+  'Exafunction/windsurf.vim',
   event = 'BufEnter',
     config = function ()
     vim.keymap.set('i', '<c-l>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
