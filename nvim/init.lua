@@ -42,7 +42,7 @@ require("lazy").setup({
 	dependencies = { 'nvim-lua/plenary.nvim' }
 },
 {'akinsho/toggleterm.nvim', version = "*", opts = {
-  size = 100,
+  size = 20,
   open_mapping = [[<c-t>]],
   hide_numbers = true,
   shade_filetypes = {},
@@ -51,7 +51,7 @@ require("lazy").setup({
   start_in_insert = true,
   insert_mappings = true,
   persist_size = true,
-  direction = "vertical",
+  direction = "float",
   close_on_exit = true,
   shell = vim.o.shell,
   float_opts = {
@@ -73,11 +73,11 @@ require("lazy").setup({
   ---@type oil.SetupOpts
   opts = {},
   -- Optional dependencies
-  dependencies = { { "echasnovski/mini.icons", opts = {} } },
-  -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+  dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
   -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
   lazy = false,
 },
+{ 'Vigemus/iron.nvim' },
 {
   "GCBallesteros/NotebookNavigator.nvim",
   keys = {
@@ -121,3 +121,12 @@ vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
 vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
 vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting`
+
+local iron = require("iron.core")
+local view = require("iron.view")
+
+iron.setup {
+  config = {
+    repl_open_cmd = view.split.vertical.rightbelow("%40"),
+  }
+}
