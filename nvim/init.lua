@@ -42,7 +42,7 @@ require("lazy").setup({
 	dependencies = { 'nvim-lua/plenary.nvim' }
 },
 {'akinsho/toggleterm.nvim', version = "*", opts = {
-  size = 20,
+  size = 100,
   open_mapping = [[<c-t>]],
   hide_numbers = true,
   shade_filetypes = {},
@@ -51,7 +51,7 @@ require("lazy").setup({
   start_in_insert = true,
   insert_mappings = true,
   persist_size = true,
-  direction = "float",
+  direction = "vertical",
   close_on_exit = true,
   shell = vim.o.shell,
   float_opts = {
@@ -88,9 +88,6 @@ require("lazy").setup({
   },
   dependencies = {
     "echasnovski/mini.comment",
-    "hkupty/iron.nvim", -- repl provider
-    -- "akinsho/toggleterm.nvim", -- alternative repl provider
-    -- "benlubas/molten-nvim", -- alternative repl provider
     "anuvyklack/hydra.nvim",
   },
   event = "VeryLazy",
