@@ -14,29 +14,21 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
-{
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    config = function () 
-      local configs = require("nvim-treesitter.configs")
-      configs.setup({
-          ensure_installed = {"python", "java", "lua"},
-          sync_install = false,
-          highlight = { enable = true },
-          indent = { enable = true },  
-        })
-    end
-},
 { "smoka7/hop.nvim", version = "*", opts = {},},
-{
-  'Exafunction/windsurf.vim',
-  event = 'BufEnter',
-    config = function ()
-    vim.keymap.set('i', '<c-l>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
-    vim.keymap.set('i', '<c-h>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
-    vim.keymap.set('n', '<c-j>', function() return vim.fn['codeium#Chat']() end, { expr = true, silent = true })
-  end
-},
+  -- {
+  --   'huggingface/llm.nvim',
+  --   opts = {
+  --     backend = "ollama",
+  --     model = "qwen2.5-coder:7b-base",
+  --           fim = {
+  --   enabled = true,
+  --   prefix = "<|fim_prefix|>",
+  --   middle = "<|fim_middle|>",
+  --   suffix = "<|fim_suffix|>",
+  -- },
+  -- url = "http://76.167.131.89:11434/", -- llm-ls uses "/api/generate"
+  --   }
+  -- },
 {
 	'nvim-telescope/telescope.nvim', tag = '0.1.5',
 	dependencies = { 'nvim-lua/plenary.nvim' }
@@ -77,25 +69,54 @@ require("lazy").setup({
   -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
   lazy = false,
 },
-{ 'Vigemus/iron.nvim' },
+{
+  'benlubas/molten-nvim',
+  dependencies = {
+    '3rd/image.nvim', -- For rendering images/plots inline
+    'nvim-treesitter/nvim-treesitter', -- Optional, but helpful for cell navigation
+  },
+  ft = { 'python', 'markdown', 'quarto' }, -- File types where Molten is active
+},
+{
+  '3rd/image.nvim',
+  config = function()
+    require('image').setup {
+      -- your configuration options here, ensure magick is installed
+    }
+  end
+},
 {
   "GCBallesteros/NotebookNavigator.nvim",
-  keys = {
-    { "]h", function() require("notebook-navigator").move_cell "d" end },
-    { "[h", function() require("notebook-navigator").move_cell "u" end },
-    { "<leader>X", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
-    { "<leader>x", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
-  },
-  dependencies = {
+dependencies = {
     "echasnovski/mini.comment",
-    "anuvyklack/hydra.nvim",
+    "cathyprime/hydra.nvim",
   },
   event = "VeryLazy",
   config = function()
     local nn = require "notebook-navigator"
-    nn.setup({ activate_hydra_keys = "<leader>h" })
+    nn.setup({
+        activate_hydra_keys = "<leader>h",
+        repl_provider = "molten",
+    })
+      end,
+},
+{
+  "GCBallesteros/jupytext.nvim",
+  config = true,
+  -- Depending on your nvim distro or config you may need to make the loading not lazy
+  -- lazy=false,
+},
+{
+  "echasnovski/mini.hipatterns",
+  event = "VeryLazy",
+  dependencies = { "GCBallesteros/NotebookNavigator.nvim" },
+  opts = function()
+    local nn = require "notebook-navigator"
+
+    local opts = { highlighters = { cells = nn.minihipatterns_spec } }
+    return opts
   end,
-}
+},
 })
 require("catppuccin").setup({
     flavour = "mocha",
@@ -121,12 +142,4 @@ vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
 vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
 vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting`
-
-local iron = require("iron.core")
-local view = require("iron.view")
-
-iron.setup {
-  config = {
-    repl_open_cmd = view.split.vertical.rightbelow("%40"),
-  }
-}
+vim.g.molten_image_provider = "image.nvim" -- Requires the image.nvim plugin
